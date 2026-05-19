@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LangGraph Mastery for AI Engineers</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1a1a1a;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 32px 24px;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 40px 28px;
+            border-radius: 0 0 18px 18px;
+        }
+
+        header h1 {
+            margin: 0 0 12px;
+            font-size: 2.7rem;
+        }
+
+        section {
+            background: white;
+            margin-top: 24px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        section h3 {
+            color: #2563eb;
+        }
+
+        pre,
+        code {
+            background: #f5f5f5;
+            padding: 0 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #111827;
+            color: white;
+        }
+
+        .note {
+            background: #eef6ff;
+            border-left: 5px solid #2563eb;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff2f2;
+            border-left: 5px solid #dc2626;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .example {
+            background: #f5fff5;
+            border-left: 5px solid #16a34a;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            margin: 50px 0 20px;
+        }
+
+        @media(max-width:768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>LangGraph Mastery for AI Engineers</h1>
+
+            <p>
+                Complete LangGraph handbook for AI engineers,
+                LLM architects, AI agent developers,
+                orchestration engineers, backend developers,
+                and production AI system designers.
+                Covers graph-based orchestration,
+                state management, multi-agent systems,
+                workflows, checkpoints, memory,
+                human-in-the-loop systems,
+                retries, persistence, observability,
+                scalability, distributed orchestration,
+                and enterprise-grade AI infrastructure.
+            </p>
+        </header>
+
+        <section>
+            <h2>1. What is LangGraph?</h2>
+
+            <p>
+                LangGraph is a graph-based orchestration framework
+                built on top of LangChain for creating
+                stateful, multi-step, production-grade AI workflows.
+            </p>
+
+            <h3>Main Purpose</h3>
+
+            <ul>
+                <li>Stateful AI workflows</li>
+                <li>Multi-agent orchestration</li>
+                <li>Complex decision systems</li>
+                <li>Human-in-the-loop AI</li>
+                <li>Persistent execution flows</li>
+                <li>Reliable AI systems</li>
+            </ul>
+
+            <div class="note">
+                LangGraph is essentially the workflow engine
+                for advanced AI applications.
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Why LangGraph Exists</h2>
+
+            <p>
+                Traditional LangChain chains become difficult
+                to manage for large, stateful AI systems.
+            </p>
+
+            <table>
+                <tr>
+                    <th>Traditional Chains</th>
+                    <th>LangGraph</th>
+                </tr>
+
+                <tr>
+                    <td>Linear execution</td>
+                    <td>Graph-based execution</td>
+                </tr>
+
+                <tr>
+                    <td>Weak state handling</td>
+                    <td>Persistent state management</td>
+                </tr>
+
+                <tr>
+                    <td>Hard retries</td>
+                    <td>Built-in checkpointing</td>
+                </tr>
+
+                <tr>
+                    <td>Limited orchestration</td>
+                    <td>Complex workflows</td>
+                </tr>
+            </table>
+
+            <div class="example">
+                LangGraph enables AI systems to behave more like distributed applications.
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Core Concepts</h2>
+
+            <h3>Main Building Blocks</h3>
+
+            <ul>
+                <li>State</li>
+                <li>Nodes</li>
+                <li>Edges</li>
+                <li>Conditional routing</li>
+                <li>Checkpoints</li>
+                <li>Persistence</li>
+                <li>Executors</li>
+                <li>Memory systems</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Graph-Based Thinking</h2>
+
+            <p>
+                LangGraph workflows are represented as graphs.
+            </p>
+
+            <pre><code>User Input
+     ↓
+Planner Node
+     ↓
+Decision Router
+   ↙      ↘
+Tool A   Tool B
+   ↘      ↙
+ Response Generator
+     ↓
+ Final Output</code></pre>
+
+            <div class="note">
+                Every node performs work.
+                Edges define transitions.
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Installing LangGraph</h2>
+
+            <pre><code>pip install langgraph</code></pre>
+
+            <h3>Common Setup</h3>
+
+            <pre><code>pip install langgraph
+pip install langchain
+pip install langchain-openai</code></pre>
+
+            <div class="warning">
+                LangGraph evolves rapidly.
+                Version compatibility matters.
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Basic Graph Example</h2>
+
+            <pre><code>from langgraph.graph import StateGraph
+
+workflow = StateGraph(dict)</code></pre>
+
+            <h3>Add Nodes</h3>
+
+            <pre><code>workflow.add_node(
+    "chatbot",
+    chatbot_function
+)</code></pre>
+
+            <h3>Add Edges</h3>
+
+            <pre><code>workflow.add_edge(
+    "chatbot",
+    "tools"
+)</code></pre>
+
+            <h3>Compile Graph</h3>
+
+            <pre><code>app = workflow.compile()</code></pre>
+        </section>
+
+        <section>
+            <h2>7. State Management</h2>
+
+            <p>
+                State is the central concept in LangGraph.
+            </p>
+
+            <pre><code>class AgentState(TypedDict):
+    messages: list
+    user_id: str
+    current_task: str</code></pre>
+
+            <h3>Why State Matters</h3>
+
+            <ul>
+                <li>Tracks workflow progress</li>
+                <li>Stores conversation history</li>
+                <li>Maintains context</li>
+                <li>Supports resumability</li>
+            </ul>
+
+            <div class="example">
+                State transforms stateless LLM calls into persistent AI systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>8. Nodes</h2>
+
+            <p>
+                Nodes are functions that operate on state.
+            </p>
+
+            <pre><code>def chatbot_node(state):
+    response = llm.invoke(
+        state["messages"]
+    )
+
+    return {
+        "messages": [
+            response
+        ]
+    }</code></pre>
+
+            <h3>Node Responsibilities</h3>
+
+            <ul>
+                <li>Run LLMs</li>
+                <li>Call APIs</li>
+                <li>Use tools</li>
+                <li>Update state</li>
+                <li>Make decisions</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Edges</h2>
+
+            <p>
+                Edges define transitions between nodes.
+            </p>
+
+            <pre><code>workflow.add_edge(
+    "planner",
+    "executor"
+)</code></pre>
+
+            <h3>Types</h3>
+
+            <ul>
+                <li>Direct edges</li>
+                <li>Conditional edges</li>
+                <li>Loop edges</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>10. Conditional Routing</h2>
+
+            <pre><code>def router(state):
+    if state["needs_tool"]:
+        return "tool_node"
+
+    return "response_node"</code></pre>
+
+            <pre><code>workflow.add_conditional_edges(
+    "planner",
+    router
+)</code></pre>
+
+            <div class="note">
+                Conditional routing enables dynamic workflows.
+            </div>
+        </section>
+
+        <section>
+            <h2>11. Multi-Agent Systems</h2>
+
+            <p>
+                LangGraph is widely used for multi-agent orchestration.
+            </p>
+
+            <h3>Example Architecture</h3>
+
+            <pre><code>User
+ ↓
+Coordinator Agent
+ ↓
+ ├── Research Agent
+ ├── Coding Agent
+ ├── Database Agent
+ └── Validation Agent</code></pre>
+
+            <h3>Benefits</h3>
+
+            <ul>
+                <li>Task specialization</li>
+                <li>Parallel execution</li>
+                <li>Better reliability</li>
+                <li>Scalable orchestration</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>12. Tool Calling</h2>
+
+            <pre><code>from langchain.tools import tool
+
+@tool
+def search_tool(query: str):
+    return "results"</code></pre>
+
+            <h3>Tool Types</h3>
+
+            <ul>
+                <li>Web search</li>
+                <li>Databases</li>
+                <li>Code execution</li>
+                <li>External APIs</li>
+                <li>Internal services</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>13. Human-in-the-Loop Systems</h2>
+
+            <p>
+                LangGraph supports pausing workflows
+                for human review.
+            </p>
+
+            <h3>Use Cases</h3>
+
+            <ul>
+                <li>Approval systems</li>
+                <li>Compliance checks</li>
+                <li>Moderation pipelines</li>
+                <li>Critical business workflows</li>
+            </ul>
+
+            <div class="warning">
+                Fully autonomous agents are risky for critical systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>14. Checkpointing</h2>
+
+            <p>
+                Checkpoints allow workflow recovery.
+            </p>
+
+            <pre><code>from langgraph.checkpoint.memory import MemorySaver
+
+memory = MemorySaver()</code></pre>
+
+            <h3>Benefits</h3>
+
+            <ul>
+                <li>Crash recovery</li>
+                <li>Workflow resumption</li>
+                <li>State persistence</li>
+                <li>Long-running agents</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>15. Persistence</h2>
+
+            <h3>Persistent Execution</h3>
+
+            <ul>
+                <li>Database-backed state</li>
+                <li>Long-running workflows</li>
+                <li>Distributed execution</li>
+                <li>Session continuity</li>
+            </ul>
+
+            <div class="note">
+                Persistence is critical for enterprise AI systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>16. Memory Systems</h2>
+
+            <h3>Memory Types</h3>
+
+            <ul>
+                <li>Short-term memory</li>
+                <li>Long-term memory</li>
+                <li>Vector memory</li>
+                <li>Conversation memory</li>
+                <li>Entity memory</li>
+            </ul>
+
+            <div class="example">
+                LangGraph enables memory-aware agents.
+            </div>
+        </section>
+
+        <section>
+            <h2>17. Streaming</h2>
+
+            <pre><code>for event in app.stream(inputs):
+    print(event)</code></pre>
+
+            <h3>Benefits</h3>
+
+            <ul>
+                <li>Real-time updates</li>
+                <li>Progress visibility</li>
+                <li>Reduced perceived latency</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>18. Parallel Execution</h2>
+
+            <p>
+                Multiple nodes can execute simultaneously.
+            </p>
+
+            <h3>Use Cases</h3>
+
+            <ul>
+                <li>Parallel tool calls</li>
+                <li>Multi-agent coordination</li>
+                <li>Concurrent retrieval</li>
+                <li>Distributed processing</li>
+            </ul>
+
+            <div class="warning">
+                Parallelism introduces synchronization complexity.
+            </div>
+        </section>
+
+        <section>
+            <h2>19. Observability</h2>
+
+            <h3>Important Metrics</h3>
+
+            <ul>
+                <li>Node execution time</li>
+                <li>Token usage</li>
+                <li>Workflow latency</li>
+                <li>State transitions</li>
+                <li>Error frequency</li>
+            </ul>
+
+            <h3>Common Tools</h3>
+
+            <ul>
+                <li>LangSmith</li>
+                <li>OpenTelemetry</li>
+                <li>Prometheus</li>
+                <li>Grafana</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>20. Production Architecture</h2>
+
+            <h3>Typical Enterprise Setup</h3>
+
+            <pre><code>Frontend
+   ↓
+API Gateway
+   ↓
+LangGraph Orchestrator
+   ↓
+ ├── LLM Services
+ ├── Tool APIs
+ ├── Vector Database
+ ├── SQL Database
+ └── Monitoring Stack</code></pre>
+
+            <div class="example">
+                LangGraph often acts as the orchestration layer
+                for enterprise AI systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>21. Common Production Problems</h2>
+
+            <ul>
+                <li>Infinite loops</li>
+                <li>State explosion</li>
+                <li>Token cost growth</li>
+                <li>Workflow deadlocks</li>
+                <li>Memory leaks</li>
+                <li>Retry storms</li>
+                <li>Agent hallucinations</li>
+            </ul>
+
+            <div class="warning">
+                Most failures happen in orchestration logic,
+                not in the LLM itself.
+            </div>
+        </section>
+
+        <section>
+            <h2>22. AI Security Considerations</h2>
+
+            <ul>
+                <li>Prompt injection defense</li>
+                <li>Tool execution sandboxing</li>
+                <li>Permission boundaries</li>
+                <li>Data leakage prevention</li>
+                <li>Rate limiting</li>
+                <li>Audit logging</li>
+            </ul>
+
+            <div class="warning">
+                AI agents connected to tools can become attack surfaces.
+            </div>
+        </section>
+
+        <section>
+            <h2>23. Scaling LangGraph Systems</h2>
+
+            <h3>Scaling Challenges</h3>
+
+            <ul>
+                <li>Workflow concurrency</li>
+                <li>Distributed state</li>
+                <li>Checkpoint storage</li>
+                <li>Long-running tasks</li>
+            </ul>
+
+            <h3>Optimization Strategies</h3>
+
+            <ul>
+                <li>Async execution</li>
+                <li>Distributed queues</li>
+                <li>State compression</li>
+                <li>Efficient checkpointing</li>
+                <li>Workflow sharding</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>24. LangGraph vs Traditional Agents</h2>
+
+            <table>
+                <tr>
+                    <th>Traditional Agents</th>
+                    <th>LangGraph</th>
+                </tr>
+
+                <tr>
+                    <td>Implicit workflows</td>
+                    <td>Explicit workflows</td>
+                </tr>
+
+                <tr>
+                    <td>Weak reliability</td>
+                    <td>Strong orchestration</td>
+                </tr>
+
+                <tr>
+                    <td>Difficult debugging</td>
+                    <td>Traceable execution</td>
+                </tr>
+
+                <tr>
+                    <td>Stateless loops</td>
+                    <td>Persistent state systems</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>25. Senior-Level Knowledge</h2>
+
+            <ul>
+                <li>Distributed orchestration</li>
+                <li>State machine design</li>
+                <li>Workflow fault tolerance</li>
+                <li>Agent coordination systems</li>
+                <li>AI observability</li>
+                <li>Checkpoint optimization</li>
+                <li>Retrieval orchestration</li>
+                <li>Cost optimization</li>
+            </ul>
+
+            <div class="note">
+                Senior AI engineering is increasingly about:
+                orchestration, reliability,
+                distributed systems,
+                observability,
+                scalability,
+                and workflow design.
+            </div>
+        </section>
+
+        <section>
+            <h2>26. Complete Learning Roadmap</h2>
+
+            <h3>Beginner</h3>
+
+            <ul>
+                <li>Nodes</li>
+                <li>Edges</li>
+                <li>Basic workflows</li>
+                <li>Simple state</li>
+            </ul>
+
+            <h3>Intermediate</h3>
+
+            <ul>
+                <li>Conditional routing</li>
+                <li>Tool orchestration</li>
+                <li>Checkpointing</li>
+                <li>Memory systems</li>
+            </ul>
+
+            <h3>Advanced</h3>
+
+            <ul>
+                <li>Multi-agent systems</li>
+                <li>Distributed execution</li>
+                <li>Human-in-the-loop systems</li>
+                <li>Parallel orchestration</li>
+            </ul>
+
+            <h3>Senior / Staff</h3>
+
+            <ul>
+                <li>Enterprise AI workflows</li>
+                <li>Workflow fault tolerance</li>
+                <li>AI observability</li>
+                <li>Scalable orchestration</li>
+                <li>Distributed AI systems</li>
+                <li>Production AI infrastructure</li>
+            </ul>
+        </section>
+
+        <div class="card">
+            <h2>Back to <a href="../index.html">Home Page</a></h2>
+        </div>
+
+        <footer>
+            <p>
+                LangGraph Mastery Guide —
+                designed as a complete all-in-one handbook
+                for serious AI engineers,
+                orchestration architects,
+                and enterprise AI system designers.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LangChain Mastery for AI Engineers</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            background: #f4f7fb;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 32px 24px;
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 40px 28px;
+            border-radius: 0 0 18px 18px;
+        }
+
+        header h1 {
+            margin: 0 0 12px;
+            font-size: 2.7rem;
+        }
+
+        section {
+            background: white;
+            margin-top: 24px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            color: #0f172a;
+            margin-top: 0;
+        }
+
+        section h3 {
+            color: #2563eb;
+        }
+
+        pre,
+        code {
+            background: #f5f5f5;
+            padding: 0 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #0f172a;
+            color: white;
+        }
+
+        .note {
+            background: #eef6ff;
+            border-left: 5px solid #2563eb;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff2f2;
+            border-left: 5px solid #dc2626;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .example {
+            background: #f5fff5;
+            border-left: 5px solid #16a34a;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            margin: 50px 0 20px;
+        }
+
+        @media(max-width:768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>LangChain Mastery for AI Engineers</h1>
+
+            <p>
+                Complete LangChain handbook for AI developers,
+                LLM engineers, RAG architects, AI agents developers,
+                backend engineers, and production AI system designers.
+                Covers chains, prompts, memory, tools, agents,
+                RAG pipelines, embeddings, vector databases,
+                observability, orchestration, scaling,
+                LangGraph, streaming, production architecture,
+                debugging, optimization, and enterprise AI systems.
+            </p>
+        </header>
+
+        <section>
+            <h2>1. What is LangChain?</h2>
+
+            <p>
+                LangChain is an orchestration framework for building
+                applications powered by Large Language Models (LLMs).
+            </p>
+
+            <h3>Main Purpose</h3>
+
+            <ul>
+                <li>Connect LLMs to external tools</li>
+                <li>Build RAG pipelines</li>
+                <li>Create AI agents</li>
+                <li>Manage prompts</li>
+                <li>Handle memory</li>
+                <li>Orchestrate workflows</li>
+            </ul>
+
+            <div class="note">
+                LangChain is not the AI model itself.
+                It is the orchestration layer around AI systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Why LangChain Exists</h2>
+
+            <p>
+                Raw LLM APIs are not enough for production AI systems.
+            </p>
+
+            <table>
+                <tr>
+                    <th>Without LangChain</th>
+                    <th>With LangChain</th>
+                </tr>
+
+                <tr>
+                    <td>Manual orchestration</td>
+                    <td>Structured pipelines</td>
+                </tr>
+
+                <tr>
+                    <td>Custom integrations</td>
+                    <td>Unified abstractions</td>
+                </tr>
+
+                <tr>
+                    <td>Complex memory handling</td>
+                    <td>Built-in memory systems</td>
+                </tr>
+
+                <tr>
+                    <td>Ad-hoc prompting</td>
+                    <td>Reusable prompt templates</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>3. Core LangChain Components</h2>
+
+            <h3>Main Building Blocks</h3>
+
+            <ul>
+                <li>LLMs</li>
+                <li>Prompts</li>
+                <li>Chains</li>
+                <li>Agents</li>
+                <li>Memory</li>
+                <li>Tools</li>
+                <li>Retrievers</li>
+                <li>Vector Stores</li>
+                <li>Document Loaders</li>
+            </ul>
+
+            <div class="example">
+                LangChain combines multiple AI infrastructure components into one workflow system.
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Installing LangChain</h2>
+
+            <pre><code>pip install langchain</code></pre>
+
+            <h3>Common Packages</h3>
+
+            <pre><code>pip install langchain
+pip install langchain-openai
+pip install langchain-community
+pip install chromadb</code></pre>
+
+            <div class="warning">
+                LangChain evolves rapidly.
+                Version mismatches are common.
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Using an LLM</h2>
+
+            <pre><code>from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model=\"gpt-4o-mini\"
+)
+
+response = llm.invoke(
+    \"Explain PostgreSQL indexing\"
+)
+
+print(response.content)</code></pre>
+
+            <h3>Supported Providers</h3>
+
+            <ul>
+                <li>OpenAI</li>
+                <li>Anthropic</li>
+                <li>Google Gemini</li>
+                <li>Mistral</li>
+                <li>Groq</li>
+                <li>Ollama</li>
+                <li>Azure OpenAI</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Prompt Templates</h2>
+
+            <pre><code>from langchain.prompts import PromptTemplate
+
+template = PromptTemplate(
+    input_variables=[\"topic\"],
+    template=\"Explain {topic} in simple terms.\"
+)
+
+prompt = template.format(
+    topic=\"vector databases\"
+)</code></pre>
+
+            <h3>Why Prompt Templates Matter</h3>
+
+            <ul>
+                <li>Reusable prompts</li>
+                <li>Dynamic variables</li>
+                <li>Cleaner architecture</li>
+                <li>Consistent formatting</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>7. Chains</h2>
+
+            <p>
+                Chains connect multiple operations together.
+            </p>
+
+            <pre><code>from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_template(
+    \"Explain {topic}\"
+)
+
+chain = prompt | llm | StrOutputParser()
+
+result = chain.invoke({
+    \"topic\": \"LangChain\"
+})</code></pre>
+
+            <div class="note">
+                Modern LangChain uses LCEL (LangChain Expression Language).
+            </div>
+        </section>
+
+        <section>
+            <h2>8. LCEL (LangChain Expression Language)</h2>
+
+            <p>
+                LCEL is the modern pipeline syntax in LangChain.
+            </p>
+
+            <pre><code>chain = prompt | llm | parser</code></pre>
+
+            <h3>Benefits</h3>
+
+            <ul>
+                <li>Composable pipelines</li>
+                <li>Streaming support</li>
+                <li>Parallel execution</li>
+                <li>Cleaner architecture</li>
+            </ul>
+
+            <div class="warning">
+                LCEL replaced many older chain abstractions.
+            </div>
+        </section>
+
+        <section>
+            <h2>9. Output Parsers</h2>
+
+            <pre><code>from langchain_core.output_parsers import JsonOutputParser</code></pre>
+
+            <h3>Parser Types</h3>
+
+            <ul>
+                <li>String parser</li>
+                <li>JSON parser</li>
+                <li>Pydantic parser</li>
+                <li>Custom parsers</li>
+            </ul>
+
+            <div class="example">
+                Structured outputs are critical for production AI systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>10. Memory Systems</h2>
+
+            <h3>Conversation Memory</h3>
+
+            <pre><code>from langchain.memory import ConversationBufferMemory</code></pre>
+
+            <h3>Memory Types</h3>
+
+            <ul>
+                <li>ConversationBufferMemory</li>
+                <li>ConversationSummaryMemory</li>
+                <li>VectorStoreRetrieverMemory</li>
+                <li>EntityMemory</li>
+            </ul>
+
+            <div class="warning">
+                Long conversations increase token cost rapidly.
+            </div>
+        </section>
+
+        <section>
+            <h2>11. Document Loaders</h2>
+
+            <pre><code>from langchain_community.document_loaders import PyPDFLoader
+
+loader = PyPDFLoader(\"document.pdf\")
+
+docs = loader.load()</code></pre>
+
+            <h3>Supported Sources</h3>
+
+            <ul>
+                <li>PDFs</li>
+                <li>Web pages</li>
+                <li>Word documents</li>
+                <li>Databases</li>
+                <li>APIs</li>
+                <li>S3 buckets</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>12. Text Splitters</h2>
+
+            <pre><code>from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50
+)</code></pre>
+
+            <h3>Why Chunking Matters</h3>
+
+            <ul>
+                <li>LLM token limits</li>
+                <li>Better retrieval quality</li>
+                <li>Reduced hallucinations</li>
+                <li>Improved semantic accuracy</li>
+            </ul>
+
+            <div class="note">
+                Chunking quality heavily affects RAG performance.
+            </div>
+        </section>
+
+        <section>
+            <h2>13. Embeddings</h2>
+
+            <pre><code>from langchain_openai import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()</code></pre>
+
+            <h3>Purpose</h3>
+
+            <ul>
+                <li>Semantic search</li>
+                <li>RAG systems</li>
+                <li>Similarity matching</li>
+                <li>Memory retrieval</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>14. Vector Databases</h2>
+
+            <pre><code>from langchain_community.vectorstores import Chroma
+
+db = Chroma.from_documents(
+    docs,
+    embeddings
+)</code></pre>
+
+            <h3>Supported Vector Stores</h3>
+
+            <ul>
+                <li>ChromaDB</li>
+                <li>Pinecone</li>
+                <li>Weaviate</li>
+                <li>FAISS</li>
+                <li>Milvus</li>
+                <li>pgvector</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>15. Retrievers</h2>
+
+            <pre><code>retriever = db.as_retriever()</code></pre>
+
+            <h3>Retriever Purpose</h3>
+
+            <ul>
+                <li>Fetch relevant documents</li>
+                <li>Semantic search</li>
+                <li>Context injection</li>
+                <li>Knowledge grounding</li>
+            </ul>
+
+            <div class="example">
+                Retrievers are core to RAG pipelines.
+            </div>
+        </section>
+
+        <section>
+            <h2>16. Building a RAG Pipeline</h2>
+
+            <pre><code>retrieved_docs = retriever.invoke(query)
+
+context = \"\\n\".join(
+    [doc.page_content for doc in retrieved_docs]
+)
+
+prompt = f\"\"\"
+Use this context:
+
+{context}
+
+Answer:
+{query}
+\"\"\"</code></pre>
+
+            <h3>RAG Flow</h3>
+
+            <ol>
+                <li>User query</li>
+                <li>Generate embeddings</li>
+                <li>Vector search</li>
+                <li>Retrieve context</li>
+                <li>Inject into prompt</li>
+                <li>Generate grounded answer</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>17. Agents</h2>
+
+            <p>
+                Agents allow LLMs to use tools dynamically.
+            </p>
+
+            <pre><code>from langchain.agents import initialize_agent</code></pre>
+
+            <h3>Agent Capabilities</h3>
+
+            <ul>
+                <li>Web search</li>
+                <li>Database querying</li>
+                <li>Code execution</li>
+                <li>API calls</li>
+                <li>File access</li>
+            </ul>
+
+            <div class="warning">
+                Agents are powerful but can become unpredictable.
+            </div>
+        </section>
+
+        <section>
+            <h2>18. Tools</h2>
+
+            <pre><code>from langchain.tools import Tool</code></pre>
+
+            <h3>Common Tools</h3>
+
+            <ul>
+                <li>Search APIs</li>
+                <li>Database tools</li>
+                <li>Python execution</li>
+                <li>Custom business APIs</li>
+            </ul>
+
+            <div class="note">
+                Tools extend LLMs beyond static knowledge.
+            </div>
+        </section>
+
+        <section>
+            <h2>19. LangGraph</h2>
+
+            <p>
+                LangGraph is the stateful workflow engine built on top of LangChain.
+            </p>
+
+            <h3>Use Cases</h3>
+
+            <ul>
+                <li>Multi-agent systems</li>
+                <li>Long-running workflows</li>
+                <li>Human-in-the-loop systems</li>
+                <li>Complex orchestration</li>
+            </ul>
+
+            <div class="example">
+                LangGraph is increasingly replacing traditional agent loops.
+            </div>
+        </section>
+
+        <section>
+            <h2>20. Streaming Responses</h2>
+
+            <pre><code>for chunk in chain.stream({
+    \"topic\": \"AI agents\"
+}):
+    print(chunk)</code></pre>
+
+            <h3>Benefits</h3>
+
+            <ul>
+                <li>Faster UX</li>
+                <li>Real-time responses</li>
+                <li>Improved perceived latency</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>21. Observability and Monitoring</h2>
+
+            <h3>LangSmith</h3>
+
+            <ul>
+                <li>Tracing</li>
+                <li>Debugging</li>
+                <li>Token tracking</li>
+                <li>Latency analysis</li>
+                <li>Evaluation</li>
+            </ul>
+
+            <div class="warning">
+                Production AI systems without observability become impossible to debug.
+            </div>
+        </section>
+
+        <section>
+            <h2>22. Common Production Problems</h2>
+
+            <ul>
+                <li>Hallucinations</li>
+                <li>Bad retrieval quality</li>
+                <li>Prompt injection</li>
+                <li>Token explosion</li>
+                <li>Slow vector search</li>
+                <li>Memory growth</li>
+                <li>Context window overflow</li>
+            </ul>
+
+            <div class="warning">
+                Most AI failures are orchestration failures, not model failures.
+            </div>
+        </section>
+
+        <section>
+            <h2>23. Scaling LangChain Systems</h2>
+
+            <h3>Scaling Challenges</h3>
+
+            <ul>
+                <li>High token costs</li>
+                <li>Embedding latency</li>
+                <li>Retrieval bottlenecks</li>
+                <li>Concurrency management</li>
+            </ul>
+
+            <h3>Optimization Strategies</h3>
+
+            <ul>
+                <li>Caching</li>
+                <li>Smaller models</li>
+                <li>Hybrid retrieval</li>
+                <li>Async execution</li>
+                <li>Streaming pipelines</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>24. AI Security Considerations</h2>
+
+            <ul>
+                <li>Prompt injection protection</li>
+                <li>Data leakage prevention</li>
+                <li>Tool execution sandboxing</li>
+                <li>PII filtering</li>
+                <li>Rate limiting</li>
+            </ul>
+
+            <div class="warning">
+                AI agents connected to tools create serious security risks.
+            </div>
+        </section>
+
+        <section>
+            <h2>25. Senior-Level Knowledge</h2>
+
+            <ul>
+                <li>Agent architecture design</li>
+                <li>RAG evaluation systems</li>
+                <li>Hybrid retrieval systems</li>
+                <li>Context engineering</li>
+                <li>Latency optimization</li>
+                <li>Cost optimization</li>
+                <li>AI observability</li>
+                <li>Distributed AI orchestration</li>
+            </ul>
+
+            <div class="note">
+                Senior AI engineering is mostly about:
+                orchestration, reliability, retrieval quality,
+                observability, security, scalability,
+                and production operations.
+            </div>
+        </section>
+
+        <section>
+            <h2>26. Complete Learning Roadmap</h2>
+
+            <h3>Beginner</h3>
+
+            <ul>
+                <li>Prompts</li>
+                <li>LLMs</li>
+                <li>Chains</li>
+                <li>Basic RAG</li>
+            </ul>
+
+            <h3>Intermediate</h3>
+
+            <ul>
+                <li>Memory</li>
+                <li>Embeddings</li>
+                <li>Vector databases</li>
+                <li>Retrievers</li>
+            </ul>
+
+            <h3>Advanced</h3>
+
+            <ul>
+                <li>Agents</li>
+                <li>LangGraph</li>
+                <li>Hybrid retrieval</li>
+                <li>Streaming systems</li>
+            </ul>
+
+            <h3>Senior / Staff</h3>
+
+            <ul>
+                <li>Production AI architecture</li>
+                <li>AI observability</li>
+                <li>Distributed orchestration</li>
+                <li>Evaluation pipelines</li>
+                <li>Cost optimization</li>
+                <li>Enterprise AI systems</li>
+            </ul>
+        </section>
+
+        <div class="card">
+            <h2>Back to <a href="../index.html">Home Page</a></h2>
+        </div>
+
+        <footer>
+            <p>
+                LangChain Mastery Guide —
+                designed as a complete all-in-one handbook
+                for serious AI engineers and production LLM architects.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azure Foundry for AI Software Developers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background: #f4f7fb;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        header {
+            background: #003366;
+            color: #fff;
+            padding: 32px 24px;
+            border-radius: 0 0 16px 16px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        section {
+            background: #fff;
+            border-radius: 16px;
+            margin-top: 24px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        section h3 {
+            margin-bottom: 8px;
+            color: #004080;
+        }
+
+        pre,
+        code {
+            background: #eef3fb;
+            padding: 0 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .audio-player {
+            margin-top: 16px;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .audio-controls button {
+            background: #003366;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .audio-controls button:hover {
+            background: #00509e;
+        }
+
+        .audio-controls input[type="range"] {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .audio-time {
+            min-width: 120px;
+            font-size: 0.95rem;
+        }
+
+        .transcript {
+            margin-top: 20px;
+            background: #f9fbff;
+            border: 1px solid #dbe6f2;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .transcript h3 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        .transcript-viewport {
+            height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .transcript-line {
+            margin: 8px 0;
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .transcript-line.active {
+            background: #ffd700;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .transcript-line:hover {
+            background: #e6f2ff;
+        }
+
+        .timestamp {
+            color: #004080;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .transcript pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        ul {
+            margin: 0 0 16px 20px;
+        }
+
+        .note {
+            background: #eaf3ff;
+            border-left: 4px solid #1e65b1;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .example {
+            background: #f6fff5;
+            border-left: 4px solid #239a4b;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Azure Foundry for AI Software Developers</h1>
+            <p>Everything you need to know about deploying AI models on Azure Foundry, including infrastructure, managed
+                services, shared servers, model hosting, scaling, security, cost, and best practices.</p>
+        </header>
+
+        <section>
+            <h2>Audio Guide</h2>
+            <div class="audio-player">
+                <audio id="audioPlayer" src="Azure_AI_Foundry_Architecture_and_Pricing_Mechanics.m4a"></audio>
+                <div class="audio-controls">
+                    <button id="playPauseBtn" type="button">Play</button>
+                    <button id="skipBackBtn" type="button">-10s</button>
+                    <button id="skipForwardBtn" type="button">+10s</button>
+                    <input id="seekSlider" type="range" min="0" max="100" value="0" step="0.1" />
+                    <span class="audio-time" id="audioTime">00:00 / 00:00</span>
+                </div>
+            </div>
+            <div class="transcript">
+                <h3>Transcript (Click to jump, follows audio playback)</h3>
+                <div class="transcript-viewport" id="transcriptViewport">
+                    <div class="transcript-line" data-time="0"><span class="timestamp">[00:00]</span>Imagine feeding an
+                        AI, you know, a million highly sensitive legal documents on a Friday evening. Right. And then
+                        getting perfectly formatted new wants to summaries by Saturday morning.</div>
+                    <div class="transcript-line" data-time="15"><span class="timestamp">[00:15]</span>And here's the
+                        kicker for exactly half the price you normally pay. I mean, that is the dream for most of
+                        Elper's right now. It really is. So welcome to today's deep dive.</div>
+                    <div class="transcript-line" data-time="30"><span class="timestamp">[00:30]</span>We're looking at
+                        Microsoft's Azure AI Foundry today, specifically the hidden mechanics of scaling AI without
+                        well, bankrupting your company. Yeah, which is incredibly easy to do if you aren't careful.
+                    </div>
+                    <div class="transcript-line" data-time="45"><span class="timestamp">[00:45]</span>We've got a stack
+                        of sources here for you. Primarily a really comprehensive pricing guide and a developer focused
+                        get started to tutorial. We want this to be a shortcut for you to understand this ecosystem
+                        because building AI apps right now.</div>
+                    <div class="transcript-line" data-time="60"><span class="timestamp">[01:00]</span>It's not just
+                        about the technical plumbing anymore. Exactly. It's the shock of getting that monthly bill. You
+                        suddenly realize that every single API call, every search query, every security filter, they all
+                        have their own distinct price tags attached.</div>
+                    <div class="transcript-line" data-time="75"><span class="timestamp">[01:15]</span>Right. The
+                        friction has totally shifted. And that's why we need to talk about the physical layout first.
+                        Before you can even start building or spending money, you have to understand the architectural
+                        blueprint of the Foundry.</div>
+                    <div class="transcript-line" data-time="90"><span class="timestamp">[01:30]</span>Yeah, the
+                        landscape has moved from just trying to make a single model work to our protecting a system that
+                        works efficiently at an enterprise scale. And the portal makes it look so easy.</div>
+                    <div class="transcript-line" data-time="105"><span class="timestamp">[01:45]</span>Like you log into
+                        the Discover tab, you see the model catalog, build tab for your agents. Where the UI is
+                        seamless. Yeah, it's too seamless. People just jump in and start spinning up models.</div>
+                    <div class="transcript-line" data-time="120"><span class="timestamp">[02:00]</span>But looking at
+                        the documentation, there is a fundamental hierarchy here. You have the overarching Azure parent
+                        resource and then underneath that, you have the projects.</div>
+                    <div class="transcript-line" data-time="135"><span class="timestamp">[02:15]</span>And if you don't
+                        understand that hierarchy, you end up designing apps that are fundamentally unscalable or worse,
+                        completely non-compliant with your own corporate governance.</div>
+                    <div class="transcript-line" data-time="150"><span class="timestamp">[02:30]</span>So I was trying
+                        to conceptualize this in practice for you guys. Think of the parent resource as the master lease
+                        on a massive commercial office building. Oh, I like that.</div>
+                    <div class="transcript-line" data-time="165"><span class="timestamp">[02:45]</span>Right. So that
+                        master lease that entity owns the structure. It dictates the overarching firewall rules for the
+                        network. And it holds the master utility account. The one paying the bills. Exactly.</div>
+                    <div class="transcript-line" data-time="180"><span class="timestamp">[03:00]</span>And then inside
+                        that building, you have different teams or like start up incubators, renting individual sweets.
+                        Those distinct sweets are your projects. That analogy holds up really well for billing.</div>
+                    <div class="transcript-line" data-time="195"><span class="timestamp">[03:15]</span>But the mechanism
+                        actually goes way deeper into the security perimeter. How so? Well, the parent resources isn't
+                        just paying the bill. It's defining the Azure Resource Manager, the ARM hierarchy.</div>
+                    <div class="transcript-line" data-time="210"><span class="timestamp">[03:30]</span>Okay. So when you
+                        configure that parent resource, you're setting up the role-based access control, your private
+                        network endpoints, your data compliance policies. And every single project spun up underneath
+                        it, automatically inherits that DNA.</div>
+                    <div class="transcript-line" data-time="225"><span class="timestamp">[03:45]</span>Oh, okay. So a
+                        developer who's just tinkering around inside their projects, we they can't accidentally expose a
+                        public endpoint. If the parent resource lease strictly says, you know, private virtual networks
+                        only. Exactly the point.</div>
+                    <div class="transcript-line" data-time="240"><span class="timestamp">[04:00]</span>The Foundry
+                        Portal creates this isolated sandbox field during the build phase. You think you're just playing
+                        with data and models. But structurally, somebody is watching. Right.</div>
+                    <div class="transcript-line" data-time="255"><span class="timestamp">[04:15]</span>Structurally,
+                        every API call, every gigabyte of vector storage, every log event, it's all traced back through
+                        that ARM hierarchy to the parent resources subscription ID, which is brilliant for IT
+                        departments.</div>
+                    <div class="transcript-line" data-time="270"><span class="timestamp">[04:30]</span>It's essential.
+                        Consolating governance at the parent level means an enterprise can let dozens of teams innovate
+                        in their own little projects. And IT doesn't have to lose their minds over rogue, shadow, IT
+                        spending, or massive security holes.</div>
+                    <div class="transcript-line" data-time="285"><span class="timestamp">[04:45]</span>That makes total
+                        sense. So once your architectural perimeter is set, we need the materials. We need a brain for
+                        the application. The Fun part, the models. Yes.</div>
+                    <div class="transcript-line" data-time="300"><span class="timestamp">[05:00]</span>So we go to the
+                        model catalog and it's got everything. Microsoft's models, open AI, tons of third-party stuff.
+                        But digging into the pricing guide, the biggest choice you have to make isn't actually which
+                        company trained the model.</div>
+                    <div class="transcript-line" data-time="315"><span class="timestamp">[05:15]</span>Right. Is the
+                        deployment mechanism? Exactly. You have to choose between model as a service mass and model as a
+                        platform app. And that distinction fundamentally dictates your infrastructure overhead.</div>
+                    <div class="transcript-line" data-time="330"><span class="timestamp">[05:30]</span>Okay. So let's
+                        break that down. Model as a service mass. How I read this in the sources. It's essentially like
+                        ordering takeout. Takeout. Okay. See where you're going.</div>
+                    <div class="transcript-line" data-time="345"><span class="timestamp">[05:45]</span>It's incredibly
+                        quick. The pricing is super predictable because you just pay per meal. And most importantly, you
+                        don't have to do the dishes or fix the other.</div>
+                    <div class="transcript-line" data-time="360"><span class="timestamp">[06:00]</span>Right. Because
+                        with moths, you're relying on a serverless API endpoints. The provider Microsoft in this case
+                        manages the underlying compute clusters, the container orchestration, all of that.</div>
+                    <div class="transcript-line" data-time="375"><span class="timestamp">[06:15]</span>You just send a
+                        payload of data, get an answer back, and pay for the token. Exactly. Input now, put tokens.
+                        That's it. But then you have model as a platform, map.</div>
+                    <div class="transcript-line" data-time="390"><span class="timestamp">[06:30]</span>And this operates
+                        more like deciding to build a completely custom commercial kitchen inside your house. That is a
+                        very expensive kitchen because what you're really paying for with map is dedicated compute.
+                    </div>
+                    <div class="transcript-line" data-time="405"><span class="timestamp">[06:45]</span>You own the
+                        hardware, essentially. You're deploying a virtual machine, allocating specific GPUs, managing
+                        network routing to that node, handling scaling logic. You are paying for that infrastructure by
+                        the hour, whether you run a million queries or absolutely zero.</div>
+                    <div class="transcript-line" data-time="420"><span class="timestamp">[07:00]</span>Right. Even for
+                        idle time, and the overhead is that severe, why would any enterprise choose the custom kitchen
+                        over just getting takeout? Well, think about strict data isolation.</div>
+                    <div class="transcript-line" data-time="435"><span class="timestamp">[07:15]</span>Oh, okay. An
+                        absolute control over the model weights. If you're in defense, health care, proprietary high
+                        frequency trading, you often legally cannot share multi-tannet compute space.</div>
+                    <div class="transcript-line" data-time="450"><span class="timestamp">[07:30]</span>So you can't just
+                        send data to a shared Microsoft API endpoints. Exactly. You might need to inject that model
+                        directly into your own heavily fortified virtual network. Totally cut off from the public
+                        internet.</div>
+                    <div class="transcript-line" data-time="465"><span class="timestamp">[07:45]</span>Airgant. And map,
+                        let's you do that. Yes. And for the more, map allows for deep, continuous fine tuning of the
+                        models actual underlying weights using your own data.</div>
+                    <div class="transcript-line" data-time="480"><span class="timestamp">[08:00]</span>Mass generally
+                        just limits you to prompt engineering or error, retrieval augmented generation. Right. Just
+                        pulling in documents rather than changing the model itself.</div>
+                    <div class="transcript-line" data-time="495"><span class="timestamp">[08:15]</span>But the source is
+                        highlight a really fascinating middle ground here with Microsoft's five family of models,
+                        specifically the five three mini. Yes. Small language models. Yeah.</div>
+                    <div class="transcript-line" data-time="510"><span class="timestamp">[08:30]</span>Because the
+                        industry is kind of realizing that brute forcing every single problem with a massive trillion
+                        parameter model is just architecturally wasteful. If like using a sledgehammer to drive into
+                        thumbtack. Exactly.</div>
+                    <div class="transcript-line" data-time="525"><span class="timestamp">[08:45]</span>And the
+                        documentation points out that five three mini is trained on highly curated text book quality
+                        data instead of just the entire noisy internet. Right. So she's remarkable reasoning, especially
+                        for math and coding tasks.</div>
+                    <div class="transcript-line" data-time="540"><span class="timestamp">[09:00]</span>But with a
+                        fraction of the compute footprint and that footprint is the critical variable because it's so
+                        small, you can actually run these models offline. Which is huge.</div>
+                    <div class="transcript-line" data-time="555"><span class="timestamp">[09:15]</span>It totally
+                        bypasses the cloud data transfer issue. You deploy it locally. Your data literally never leaves
+                        your physical machine. And this actually circles right back to the Maus versus map decision.
+                    </div>
+                    <div class="transcript-line" data-time="570"><span class="timestamp">[09:30]</span>In the Foundry,
+                        you can consume those five models via serverless APIs on a pays you go basis or you can just
+                        download the weights and host them locally.</div>
+                    <div class="transcript-line" data-time="585"><span class="timestamp">[09:45]</span>Having you a
+                        massive reduction in cost for those routine tasks that don't need a frontier models brain.
+                        Exactly. But let's be real. Most developers listening to this are still going to gravitate
+                        toward the frontier heavy weights.</div>
+                    <div class="transcript-line" data-time="600"><span class="timestamp">[10:00]</span>The Azure Open AI
+                        models like GPT40 and the O1 reasoning model. Oh, absolutely. They're the most popular for a
+                        reason. And the price and mechanics for these specific models are dense.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. What is Azure Foundry?</h2>
+            <p>Azure Foundry is a cloud platform offering from Microsoft Azure focused on building, deploying, and
+                managing AI workloads. It integrates Azure compute, storage, networking, and managed AI services to
+                support model training, fine-tuning, inference, and production deployment.</p>
+            <p>For an AI software developer, Azure Foundry is valuable because it simplifies the cloud resources needed
+                for machine learning and model hosting while offering enterprise-grade reliability and security.</p>
+        </section>
+
+        <section>
+            <h2>2. Core Concepts for AI Model Deployment</h2>
+            <h3>Compute and Inference</h3>
+            <p>In Azure Foundry, you will typically choose between:</p>
+            <ul>
+                <li><strong>Managed compute</strong> (fully managed model deployment services, autoscaling, integrated
+                    monitoring)</li>
+                <li><strong>Dedicated compute</strong> (VMs, containers, GPUs reserved for your workloads)</li>
+                <li><strong>Shared compute</strong> (multi-tenant/shared inference endpoints with lower cost and faster
+                    provisioning)</li>
+            </ul>
+
+            <h3>Data and Storage</h3>
+            <ul>
+                <li><strong>Blob storage</strong> for model artifacts, datasets, logs, and checkpoints</li>
+                <li><strong>Azure Files</strong> for shared file systems between compute clusters</li>
+                <li><strong>Database services</strong> like Cosmos DB or Azure SQL for metadata, results, and user data
+                </li>
+            </ul>
+
+            <h3>Networking and Access</h3>
+            <ul>
+                <li><strong>Private endpoints</strong> to keep traffic within your virtual network</li>
+                <li><strong>API gateways</strong> for secure and scalable external access</li>
+                <li><strong>Virtual networks and subnets</strong> to isolate AI workloads</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Managed vs Shared Infrastructure</h2>
+            <h3>Managed Infrastructure</h3>
+            <p>Managed infrastructure means Azure handles much of the operational work for you.</p>
+            <ul>
+                <li>Automatic updates and patching</li>
+                <li>Built-in autoscaling and load balancing</li>
+                <li>Integrated monitoring and logging</li>
+                <li>Faster time-to-production</li>
+            </ul>
+            <div class="note">
+                <strong>Good for:</strong> production deployments, teams that want to reduce DevOps overhead, and
+                workloads that need predictable SLA-backed performance.
+            </div>
+
+            <h3>Shared Infrastructure</h3>
+            <p>Shared infrastructure means multiple customers or workloads use the same physical resources. This can be
+                offered as shared inference endpoints or multi-tenant model hosting.</p>
+            <ul>
+                <li>Lower cost because resources are amortized across users</li>
+                <li>Better for development, prototyping, and low-traffic inference</li>
+                <li>Potential variability in latency and throughput</li>
+            </ul>
+            <div class="note">
+                <strong>Important:</strong> shared environments may have limits on model size, concurrency, and custom
+                runtime dependencies.
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Azure Foundry Deployment Options</h2>
+            <h3>1. Managed Model Endpoints</h3>
+            <p>Managed endpoints allow you to deploy a trained model as a REST API without managing the underlying
+                infrastructure.</p>
+            <ul>
+                <li>Easy deployment from model registry or artifact storage</li>
+                <li>Autoscaling based on traffic</li>
+                <li>Built-in metrics, logs, and health checks</li>
+            </ul>
+
+            <h3>2. Containerized Deployments</h3>
+            <p>Use Docker containers and Azure Kubernetes Service (AKS) when you need full control over the runtime
+                environment.</p>
+            <ul>
+                <li>Support for custom libraries and model dependencies</li>
+                <li>Can use GPU-enabled nodes for inference or training</li>
+                <li>Integrates with CI/CD pipelines</li>
+            </ul>
+
+            <h3>3. Serverless or microservice-based inference</h3>
+            <p>For lighter AI workloads, you can deploy inference as a serverless function or microservice.</p>
+            <ul>
+                <li>Azure Functions, Azure Container Apps, or Azure App Service</li>
+                <li>Pay only for execution time or low-level compute usage</li>
+                <li>Useful for event-driven use cases and small APIs</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Key Topics AI Developers Should Know</h2>
+            <h3>Model Packaging</h3>
+            <p>Package models with dependencies and config. Common formats include ONNX, PyTorch, TensorFlow SavedModel,
+                and custom Pickle/Joblib packages.</p>
+            <ul>
+                <li>Keep your model artifacts under version control in storage.</li>
+                <li>Store both the model and pre/post-processing code together if runtime compatibility matters.</li>
+            </ul>
+
+            <h3>Performance and Latency</h3>
+            <ul>
+                <li>Use GPUs or specialized accelerators for large models or real-time inference.</li>
+                <li>Measure cold-start time for managed endpoints and container startup time.</li>
+                <li>Use batching or model quantization to reduce latency and cost.</li>
+            </ul>
+
+            <h3>Scaling</h3>
+            <ul>
+                <li>Horizontal scaling: add more instances.</li>
+                <li>Vertical scaling: choose more powerful machine types or GPUs.</li>
+                <li>Autoscaling policies: scale on CPU/GPU usage, queue length, or request rate.</li>
+            </ul>
+
+            <h3>Availability and Disaster Recovery</h3>
+            <ul>
+                <li>Deploy across regions or availability zones.</li>
+                <li>Use managed backups for storage and model artifacts.</li>
+                <li>Implement retry logic and circuit breakers in client applications.</li>
+            </ul>
+
+            <h3>Cost Management</h3>
+            <ul>
+                <li>Track compute spend separately from storage and networking.</li>
+                <li>Use reserved instances or spot instances for non-critical workloads.</li>
+                <li>Monitor idle resources and scale down when unused.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Security and Compliance</h2>
+            <ul>
+                <li><strong>Identity and Access Management:</strong> use Azure AD, role-based access control (RBAC), and
+                    managed identities.</li>
+                <li><strong>Encryption:</strong> enable encryption at rest and in transit, including TLS for endpoints.
+                </li>
+                <li><strong>Network security:</strong> use virtual networks, private endpoints, firewalls, and service
+                    endpoints.</li>
+                <li><strong>Data governance:</strong> label sensitive data and store it in compliant vaults.</li>
+                <li><strong>Audit logging:</strong> enable activity logs, diagnostic logs, and access logs.</li>
+            </ul>
+            <div class="note">
+                Azure Foundry supports enterprise compliance frameworks, which is important for AI systems handling
+                sensitive data and regulated workloads.
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Example Deployments</h2>
+            <h3>Example 1: Managed endpoint for an inference model</h3>
+            <pre><code>1. Store model artifacts in Azure Blob Storage.
+2. Create a model resource in Azure Foundry or Azure Machine Learning.
+3. Deploy the model to a managed endpoint.
+4. Call the endpoint via REST using API key or Azure AD token.
+
+Example endpoint request:
+POST https://my-foundry-endpoint.azure.com/inference
+Headers:
+  Authorization: Bearer &lt;token&gt;
+  Content-Type: application/json
+Body:
+  {"input": "text to classify"}
+</code></pre>
+
+            <h3>Example 2: Containerized GPU inference</h3>
+            <pre><code>1. Build a Docker image with model code, Torch or TensorFlow, and inference script.
+2. Push image to Azure Container Registry.
+3. Deploy to Azure Kubernetes Service with a GPU node pool.
+4. Configure Horizontal Pod Autoscaler for traffic spikes.
+
+Example Kubernetes manifest snippet:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foundry-ai-inference
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myregistry.azurecr.io/ai-inference:latest
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+</code></pre>
+        </section>
+
+        <section>
+            <h2>8. Practical Checklist Before Deployment</h2>
+            <ul>
+                <li>Choose between managed endpoint, containerized deployment, or serverless functions.</li>
+                <li>Verify model file format and dependency compatibility.</li>
+                <li>Prepare secure credential management with Key Vault or managed identity.</li>
+                <li>Decide on compute type: shared CPU, dedicated GPU, or specialized hardware.</li>
+                <li>Plan for autoscaling, monitoring, and observability.</li>
+                <li>Review cost estimates for compute, storage, networking, and data egress.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Best Practices for AI Developers</h2>
+            <ul>
+                <li>Use infrastructure as code (ARM templates, Bicep, Terraform) for repeatable deployments.</li>
+                <li>Automate model validation and canary rollouts for new versions.</li>
+                <li>Monitor drift and model performance after deployment.</li>
+                <li>Separate training and inference environments.</li>
+                <li>Keep production endpoints stateless and use object storage for shared data.</li>
+            </ul>
+        </section>
+
+        <div class="card">
+            <h2>Back to <a href="../index.html">Home Page</a></h2>   
+        </div>
+        
+        <footer>
+            <p>Created for AI software developers to understand Azure Foundry deployment concepts, infrastructure
+                choices, and practical considerations.</p>
+        </footer>
+    </div>
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const skipBackBtn = document.getElementById('skipBackBtn');
+        const skipForwardBtn = document.getElementById('skipForwardBtn');
+        const seekSlider = document.getElementById('seekSlider');
+        const audioTime = document.getElementById('audioTime');
+        const transcriptViewport = document.getElementById('transcriptViewport');
+
+        let isUserScrolling = false;
+        let scrollTimeout;
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        // Detect manual scrolling
+        transcriptViewport.addEventListener('wheel', () => {
+            isUserScrolling = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isUserScrolling = false;
+            }, 1500);
+        });
+
+        transcriptViewport.addEventListener('touchmove', () => {
+            isUserScrolling = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isUserScrolling = false;
+            }, 1500);
+        });
+
+        // Update transcript highlight and scroll
+        function updateTranscriptScroll() {
+            const currentTime = audio.currentTime;
+            const lines = transcriptViewport.querySelectorAll('.transcript-line');
+            let activeLineIndex = 0;
+
+            // Find which line should be active based on current time
+            for (let i = lines.length - 1; i >= 0; i--) {
+                const lineTime = parseInt(lines[i].getAttribute('data-time'));
+                if (currentTime >= lineTime) {
+                    activeLineIndex = i;
+                    break;
+                }
+            }
+
+            // Remove active class from all lines
+            lines.forEach(line => line.classList.remove('active'));
+
+            // Add active class to current line
+            lines[activeLineIndex].classList.add('active');
+
+            // Only auto-scroll if user isn't manually scrolling
+            if (!isUserScrolling) {
+                const activeLine = lines[activeLineIndex];
+                const lineTop = activeLine.offsetTop;
+                const lineHeight = activeLine.offsetHeight;
+                const viewportHeight = transcriptViewport.offsetHeight;
+                const scrollTop = transcriptViewport.scrollTop;
+
+                // Calculate where line should be (centered in viewport)
+                const desiredScrollTop = lineTop - (viewportHeight / 3) + (lineHeight / 2);
+
+                // Only scroll if line is out of view
+                if (lineTop < scrollTop || lineTop + lineHeight > scrollTop + viewportHeight) {
+                    transcriptViewport.scrollTop = desiredScrollTop;
+                }
+            }
+        }
+
+        // Click on transcript line to jump to that time
+        transcriptViewport.addEventListener('click', (e) => {
+            const line = e.target.closest('.transcript-line');
+            if (line) {
+                const time = parseInt(line.getAttribute('data-time'));
+                audio.currentTime = time;
+                audio.play();
+                playPauseBtn.textContent = 'Pause';
+                isUserScrolling = false; // Reset flag after click
+            }
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            seekSlider.max = audio.duration;
+            audioTime.textContent = `00:00 / ${formatTime(audio.duration)}`;
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            seekSlider.value = audio.currentTime;
+            audioTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            updateTranscriptScroll();
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.textContent = 'Pause';
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = 'Play';
+            }
+        });
+
+        skipBackBtn.addEventListener('click', () => {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+
+        skipForwardBtn.addEventListener('click', () => {
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        });
+
+        seekSlider.addEventListener('input', () => {
+            audio.currentTime = seekSlider.value;
+        });
+
+        audio.addEventListener('ended', () => {
+            playPauseBtn.textContent = 'Play';
+        });
+    </script>
+</body>
+
+</html>

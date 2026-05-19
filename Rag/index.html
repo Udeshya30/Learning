@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAG Mastery for AI Engineers</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f7fb;
+            color: #1a1a1a;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 32px 24px;
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 40px 28px;
+            border-radius: 0 0 18px 18px;
+        }
+
+        header h1 {
+            margin: 0 0 12px;
+            font-size: 2.7rem;
+        }
+
+        section {
+            background: white;
+            margin-top: 24px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            color: #0f172a;
+            margin-top: 0;
+        }
+
+        section h3 {
+            color: #2563eb;
+        }
+
+        pre,
+        code {
+            background: #f5f5f5;
+            padding: 0 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #0f172a;
+            color: white;
+        }
+
+        .note {
+            background: #eef6ff;
+            border-left: 5px solid #2563eb;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff2f2;
+            border-left: 5px solid #dc2626;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .example {
+            background: #f5fff5;
+            border-left: 5px solid #16a34a;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            margin: 50px 0 20px;
+        }
+
+        @media(max-width:768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>RAG Mastery for AI Engineers</h1>
+
+            <p>
+                Complete Retrieval-Augmented Generation (RAG) handbook
+                for AI engineers, LLM developers, backend architects,
+                vector database engineers, AI infrastructure developers,
+                and production AI system designers.
+                Covers embeddings, retrieval systems,
+                vector databases, chunking, indexing,
+                hybrid retrieval, re-ranking,
+                hallucination reduction,
+                evaluation pipelines,
+                scaling, observability,
+                security, optimization,
+                and enterprise-grade RAG architecture.
+            </p>
+        </header>
+
+        <section>
+            <h2>1. What is RAG?</h2>
+
+            <p>
+                RAG stands for Retrieval-Augmented Generation.
+            </p>
+
+            <p>
+                It combines:
+            </p>
+
+            <ul>
+                <li>Retrieval systems</li>
+                <li>Vector databases</li>
+                <li>Embeddings</li>
+                <li>Large Language Models (LLMs)</li>
+            </ul>
+
+            <div class="note">
+                RAG allows LLMs to answer using external knowledge
+                instead of relying only on training data.
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Why RAG Exists</h2>
+
+            <table>
+                <tr>
+                    <th>Problem</th>
+                    <th>How RAG Helps</th>
+                </tr>
+
+                <tr>
+                    <td>LLMs hallucinate</td>
+                    <td>Injects real context</td>
+                </tr>
+
+                <tr>
+                    <td>Models lack fresh data</td>
+                    <td>Uses live knowledge</td>
+                </tr>
+
+                <tr>
+                    <td>Fine-tuning is expensive</td>
+                    <td>Retrieval is cheaper</td>
+                </tr>
+
+                <tr>
+                    <td>Private data handling</td>
+                    <td>Uses internal documents</td>
+                </tr>
+            </table>
+
+            <div class="example">
+                RAG turns LLMs from "general predictors"
+                into "knowledge-grounded systems".
+            </div>
+        </section>
+
+        <section>
+            <h2>3. High-Level RAG Flow</h2>
+
+            <pre><code>User Query
+    ↓
+Embedding Generation
+    ↓
+Vector Search
+    ↓
+Retrieve Relevant Chunks
+    ↓
+Inject Context into Prompt
+    ↓
+LLM Generates Final Answer</code></pre>
+
+            <div class="note">
+                Retrieval quality largely determines answer quality.
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Core Components of RAG</h2>
+
+            <ul>
+                <li>Document ingestion</li>
+                <li>Chunking</li>
+                <li>Embedding generation</li>
+                <li>Vector database</li>
+                <li>Retriever</li>
+                <li>Prompt construction</li>
+                <li>LLM generation</li>
+                <li>Re-ranking</li>
+                <li>Evaluation systems</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Embeddings</h2>
+
+            <p>
+                Embeddings are vector representations of data.
+            </p>
+
+            <pre><code>[0.123, -0.441, 0.992, ...]</code></pre>
+
+            <h3>Purpose</h3>
+
+            <ul>
+                <li>Semantic similarity</li>
+                <li>Meaning-based search</li>
+                <li>Context retrieval</li>
+            </ul>
+
+            <div class="warning">
+                Poor embeddings cause poor retrieval quality.
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Chunking</h2>
+
+            <h3>Why Chunking Matters</h3>
+
+            <ul>
+                <li>LLMs have token limits</li>
+                <li>Large documents reduce retrieval precision</li>
+                <li>Small chunks improve semantic accuracy</li>
+            </ul>
+
+            <h3>Chunking Strategies</h3>
+
+            <ul>
+                <li>Fixed-size chunking</li>
+                <li>Sliding window chunking</li>
+                <li>Recursive chunking</li>
+                <li>Semantic chunking</li>
+                <li>Hierarchical chunking</li>
+            </ul>
+
+            <div class="example">
+                Common chunk sizes:
+                300–1000 tokens.
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Chunk Overlap</h2>
+
+            <pre><code>Chunk 1:
+[Sentence A][Sentence B][Sentence C]
+
+Chunk 2:
+[Sentence C][Sentence D][Sentence E]</code></pre>
+
+            <h3>Why Overlap Matters</h3>
+
+            <ul>
+                <li>Preserves context continuity</li>
+                <li>Improves retrieval quality</li>
+                <li>Reduces information fragmentation</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>8. Vector Databases</h2>
+
+            <h3>Popular Vector Databases</h3>
+
+            <ul>
+                <li>ChromaDB</li>
+                <li>Pinecone</li>
+                <li>Weaviate</li>
+                <li>Milvus</li>
+                <li>FAISS</li>
+                <li>pgvector</li>
+            </ul>
+
+            <h3>Main Responsibilities</h3>
+
+            <ul>
+                <li>Store embeddings</li>
+                <li>Perform similarity search</li>
+                <li>Filter metadata</li>
+                <li>Enable fast retrieval</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Similarity Search</h2>
+
+            <h3>Common Similarity Metrics</h3>
+
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Use Case</th>
+                </tr>
+
+                <tr>
+                    <td>Cosine Similarity</td>
+                    <td>Most NLP tasks</td>
+                </tr>
+
+                <tr>
+                    <td>Dot Product</td>
+                    <td>Optimized embeddings</td>
+                </tr>
+
+                <tr>
+                    <td>Euclidean Distance</td>
+                    <td>Geometric spaces</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>10. Retrieval Systems</h2>
+
+            <h3>Retriever Responsibilities</h3>
+
+            <ul>
+                <li>Find relevant chunks</li>
+                <li>Filter noisy documents</li>
+                <li>Optimize recall</li>
+                <li>Improve grounding quality</li>
+            </ul>
+
+            <pre><code>retriever.invoke(query)</code></pre>
+
+            <div class="note">
+                Retrieval is the heart of RAG systems.
+            </div>
+        </section>
+
+        <section>
+            <h2>11. Metadata Filtering</h2>
+
+            <pre><code>{
+  "department": "finance",
+  "year": 2025
+}</code></pre>
+
+            <h3>Why Metadata Matters</h3>
+
+            <ul>
+                <li>Tenant isolation</li>
+                <li>Security filtering</li>
+                <li>Faster retrieval</li>
+                <li>Context narrowing</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>12. Prompt Construction</h2>
+
+            <pre><code>You are an assistant.
+
+Use the following context:
+
+{retrieved_context}
+
+Question:
+{user_query}</code></pre>
+
+            <h3>Goals</h3>
+
+            <ul>
+                <li>Inject retrieved knowledge</li>
+                <li>Reduce hallucinations</li>
+                <li>Improve answer grounding</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>13. Hallucinations in RAG</h2>
+
+            <h3>Why Hallucinations Still Happen</h3>
+
+            <ul>
+                <li>Bad retrieval</li>
+                <li>Irrelevant chunks</li>
+                <li>Weak prompting</li>
+                <li>Context overflow</li>
+                <li>Low-quality embeddings</li>
+            </ul>
+
+            <div class="warning">
+                RAG reduces hallucinations but does not eliminate them.
+            </div>
+        </section>
+
+        <section>
+            <h2>14. Re-Ranking</h2>
+
+            <p>
+                Re-ranking improves retrieval precision.
+            </p>
+
+            <h3>Flow</h3>
+
+            <pre><code>Initial Retrieval
+      ↓
+Cross Encoder Re-Ranker
+      ↓
+Best Chunks Selected</code></pre>
+
+            <h3>Popular Re-Rankers</h3>
+
+            <ul>
+                <li>Cohere Re-rank</li>
+                <li>BGE Re-ranker</li>
+                <li>Cross Encoders</li>
+            </ul>
+
+            <div class="example">
+                Re-ranking often improves answer quality dramatically.
+            </div>
+        </section>
+
+        <section>
+            <h2>15. Hybrid Search</h2>
+
+            <p>
+                Hybrid search combines:
+            </p>
+
+            <ul>
+                <li>Vector search</li>
+                <li>Keyword search (BM25)</li>
+            </ul>
+
+            <h3>Why It Matters</h3>
+
+            <ul>
+                <li>Handles exact terms better</li>
+                <li>Improves recall</li>
+                <li>Better enterprise retrieval</li>
+            </ul>
+
+            <div class="note">
+                Most enterprise RAG systems use hybrid retrieval.
+            </div>
+        </section>
+
+        <section>
+            <h2>16. Query Transformation</h2>
+
+            <h3>Techniques</h3>
+
+            <ul>
+                <li>Query rewriting</li>
+                <li>Multi-query retrieval</li>
+                <li>Hypothetical document generation (HyDE)</li>
+                <li>Step-back prompting</li>
+            </ul>
+
+            <div class="example">
+                Query transformation improves retrieval relevance.
+            </div>
+        </section>
+
+        <section>
+            <h2>17. Advanced RAG Architectures</h2>
+
+            <h3>Types</h3>
+
+            <ul>
+                <li>Naive RAG</li>
+                <li>Agentic RAG</li>
+                <li>Graph RAG</li>
+                <li>Multi-hop RAG</li>
+                <li>Hierarchical RAG</li>
+                <li>Adaptive RAG</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>18. Graph RAG</h2>
+
+            <p>
+                Graph RAG combines:
+            </p>
+
+            <ul>
+                <li>Knowledge graphs</li>
+                <li>Vector retrieval</li>
+                <li>Entity relationships</li>
+            </ul>
+
+            <div class="note">
+                Graph RAG improves reasoning across connected information.
+            </div>
+        </section>
+
+        <section>
+            <h2>19. Multi-Hop Retrieval</h2>
+
+            <p>
+                Multi-hop retrieval performs multiple retrieval steps
+                to answer complex questions.
+            </p>
+
+            <pre><code>Question
+   ↓
+Retrieve Chunk A
+   ↓
+Extract New Query
+   ↓
+Retrieve Chunk B
+   ↓
+Generate Final Answer</code></pre>
+        </section>
+
+        <section>
+            <h2>20. Evaluation Metrics</h2>
+
+            <h3>Important Metrics</h3>
+
+            <ul>
+                <li>Recall</li>
+                <li>Precision</li>
+                <li>MRR (Mean Reciprocal Rank)</li>
+                <li>Faithfulness</li>
+                <li>Groundedness</li>
+                <li>Answer relevance</li>
+            </ul>
+
+            <div class="warning">
+                Production RAG systems require continuous evaluation.
+            </div>
+        </section>
+
+        <section>
+            <h2>21. Observability</h2>
+
+            <h3>Monitor These Metrics</h3>
+
+            <ul>
+                <li>Retrieval latency</li>
+                <li>Embedding latency</li>
+                <li>Vector search performance</li>
+                <li>Token usage</li>
+                <li>Context size</li>
+                <li>Hallucination rate</li>
+            </ul>
+
+            <h3>Common Tools</h3>
+
+            <ul>
+                <li>LangSmith</li>
+                <li>OpenTelemetry</li>
+                <li>Grafana</li>
+                <li>Phoenix</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>22. Scaling RAG Systems</h2>
+
+            <h3>Scaling Challenges</h3>
+
+            <ul>
+                <li>Large vector storage</li>
+                <li>Embedding costs</li>
+                <li>Retrieval latency</li>
+                <li>Concurrency</li>
+                <li>Context window limits</li>
+            </ul>
+
+            <h3>Optimization Strategies</h3>
+
+            <ul>
+                <li>Caching</li>
+                <li>Smaller embedding models</li>
+                <li>Chunk optimization</li>
+                <li>Index optimization</li>
+                <li>Hierarchical retrieval</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>23. Security Considerations</h2>
+
+            <ul>
+                <li>PII filtering</li>
+                <li>Metadata access control</li>
+                <li>Tenant isolation</li>
+                <li>Prompt injection defense</li>
+                <li>Document-level permissions</li>
+            </ul>
+
+            <div class="warning">
+                Retrieval systems can leak sensitive data if poorly designed.
+            </div>
+        </section>
+
+        <section>
+            <h2>24. Common Production Problems</h2>
+
+            <ul>
+                <li>Bad chunking</li>
+                <li>Duplicate documents</li>
+                <li>Embedding drift</li>
+                <li>Weak retrieval</li>
+                <li>Context flooding</li>
+                <li>Irrelevant chunks</li>
+                <li>Slow vector search</li>
+            </ul>
+
+            <div class="warning">
+                Most RAG failures are retrieval failures,
+                not LLM failures.
+            </div>
+        </section>
+
+        <section>
+            <h2>25. Senior-Level Knowledge</h2>
+
+            <ul>
+                <li>Hybrid retrieval systems</li>
+                <li>ANN indexing</li>
+                <li>Re-ranking pipelines</li>
+                <li>Distributed retrieval</li>
+                <li>Retrieval evaluation systems</li>
+                <li>Knowledge graphs</li>
+                <li>Enterprise RAG security</li>
+                <li>Cost optimization</li>
+            </ul>
+
+            <div class="note">
+                Senior RAG engineering is mostly about:
+                retrieval quality, orchestration,
+                observability, latency optimization,
+                and scalable infrastructure.
+            </div>
+        </section>
+
+        <section>
+            <h2>26. Complete Learning Roadmap</h2>
+
+            <h3>Beginner</h3>
+
+            <ul>
+                <li>Embeddings</li>
+                <li>Chunking</li>
+                <li>Vector databases</li>
+                <li>Basic retrieval</li>
+            </ul>
+
+            <h3>Intermediate</h3>
+
+            <ul>
+                <li>Hybrid search</li>
+                <li>Metadata filtering</li>
+                <li>Prompt engineering</li>
+                <li>Re-ranking</li>
+            </ul>
+
+            <h3>Advanced</h3>
+
+            <ul>
+                <li>Graph RAG</li>
+                <li>Multi-hop retrieval</li>
+                <li>Distributed retrieval</li>
+                <li>Evaluation pipelines</li>
+            </ul>
+
+            <h3>Senior / Staff</h3>
+
+            <ul>
+                <li>Enterprise RAG systems</li>
+                <li>AI observability</li>
+                <li>Scalable retrieval infrastructure</li>
+                <li>Cost optimization</li>
+                <li>Security architecture</li>
+                <li>Production AI operations</li>
+            </ul>
+        </section>
+
+        <div class="card">
+            <h2>Back to <a href="../index.html">Home Page</a></h2>
+        </div>
+
+        <footer>
+            <p>
+                RAG Mastery Guide —
+                designed as a complete all-in-one handbook
+                for serious AI engineers,
+                retrieval architects,
+                and enterprise AI infrastructure developers.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

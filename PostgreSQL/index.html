@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PostgreSQL Mastery for Software Engineers</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            background: #f4f7fb;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 32px 24px;
+        }
+
+        header {
+            background: #003366;
+            color: white;
+            padding: 40px 28px;
+            border-radius: 0 0 18px 18px;
+        }
+
+        header h1 {
+            margin: 0 0 12px;
+            font-size: 2.7rem;
+        }
+
+        header p {
+            opacity: 0.95;
+        }
+
+        section {
+            background: white;
+            margin-top: 24px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        section h3 {
+            color: #00509e;
+        }
+
+        pre,
+        code {
+            background: #f5f5f5;
+            padding: 0 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        .note {
+            background: #eaf3ff;
+            border-left: 5px solid #0066cc;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff2f2;
+            border-left: 5px solid #d32f2f;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .example {
+            background: #f5fff5;
+            border-left: 5px solid #2e7d32;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            margin: 50px 0 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #003366;
+            color: white;
+        }
+
+        @media(max-width:768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>PostgreSQL Mastery for Software Engineers</h1>
+
+            <p>
+                Complete PostgreSQL handbook for developers, senior engineers,
+                architects, backend engineers, DevOps engineers, and AI developers.
+                Covers SQL, internals, scaling, optimization, HA, replication,
+                performance tuning, AI workloads, security, cloud deployments,
+                production debugging, and operational excellence.
+            </p>
+        </header>
+
+        <section>
+            <h2>1. What is PostgreSQL?</h2>
+
+            <p>
+                PostgreSQL is an advanced open-source relational database system known for:
+            </p>
+
+            <ul>
+                <li>ACID compliance</li>
+                <li>MVCC concurrency control</li>
+                <li>Advanced indexing</li>
+                <li>JSON support</li>
+                <li>Replication and HA</li>
+                <li>Extensibility</li>
+                <li>Transactional + analytical workloads</li>
+            </ul>
+
+            <div class="note">
+                PostgreSQL today is not just a relational database.
+                It is commonly used as:
+                vector database, event store, analytics engine,
+                AI metadata storage, queue system, and geospatial platform.
+            </div>
+        </section>
+
+        <section>
+            <h2>2. PostgreSQL Architecture</h2>
+
+            <h3>Core Components</h3>
+
+            <ul>
+                <li><strong>Postmaster</strong> → main coordinator process</li>
+                <li><strong>WAL Writer</strong> → durability logs</li>
+                <li><strong>Checkpointer</strong> → flush checkpoints</li>
+                <li><strong>Background Writer</strong> → writes dirty pages</li>
+                <li><strong>Autovacuum</strong> → dead tuple cleanup</li>
+                <li><strong>Shared Buffers</strong> → memory cache</li>
+                <li><strong>WAL</strong> → write ahead logging</li>
+            </ul>
+
+            <h3>MVCC (Multi-Version Concurrency Control)</h3>
+
+            <p>
+                PostgreSQL allows readers and writers to work concurrently
+                without blocking each other.
+            </p>
+
+            <div class="example">
+                PostgreSQL creates row versions instead of overwriting rows directly.
+            </div>
+
+            <div class="warning">
+                Without VACUUM, dead tuples accumulate and table bloat becomes severe.
+            </div>
+        </section>
+
+        <section>
+            <h2>3. PostgreSQL Data Types</h2>
+
+            <h3>Basic Types</h3>
+
+            <ul>
+                <li>INTEGER</li>
+                <li>BIGINT</li>
+                <li>NUMERIC</li>
+                <li>TEXT</li>
+                <li>VARCHAR</li>
+                <li>BOOLEAN</li>
+                <li>TIMESTAMP</li>
+                <li>UUID</li>
+            </ul>
+
+            <h3>Advanced Types</h3>
+
+            <ul>
+                <li>JSON / JSONB</li>
+                <li>ARRAYS</li>
+                <li>ENUMS</li>
+                <li>HSTORE</li>
+                <li>RANGE TYPES</li>
+                <li>TSVECTOR</li>
+            </ul>
+
+            <pre><code>CREATE TABLE products (
+  id UUID PRIMARY KEY,
+  metadata JSONB,
+  tags TEXT[],
+  created_at TIMESTAMP DEFAULT now()
+);</code></pre>
+        </section>
+
+        <section>
+            <h2>4. Schema Design</h2>
+
+            <h3>Normalization</h3>
+
+            <ul>
+                <li>1NF → atomic values</li>
+                <li>2NF → remove partial dependency</li>
+                <li>3NF → remove transitive dependency</li>
+            </ul>
+
+            <h3>Primary Key Strategies</h3>
+
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+
+                <tr>
+                    <td>BIGSERIAL</td>
+                    <td>Fast indexes</td>
+                    <td>Centralized generation</td>
+                </tr>
+
+                <tr>
+                    <td>UUID</td>
+                    <td>Distributed systems</td>
+                    <td>Index fragmentation</td>
+                </tr>
+
+                <tr>
+                    <td>ULID</td>
+                    <td>Ordered UUID-like IDs</td>
+                    <td>Less common</td>
+                </tr>
+            </table>
+
+            <div class="warning">
+                Premature denormalization creates synchronization complexity.
+            </div>
+        </section>
+
+        <section>
+            <h2>5. SQL Mastery</h2>
+
+            <h3>Basic Query</h3>
+
+            <pre><code>SELECT id, name
+FROM users
+WHERE status = 'active'
+ORDER BY created_at DESC
+LIMIT 10;</code></pre>
+
+            <h3>Joins</h3>
+
+            <ul>
+                <li>INNER JOIN</li>
+                <li>LEFT JOIN</li>
+                <li>RIGHT JOIN</li>
+                <li>FULL OUTER JOIN</li>
+                <li>CROSS JOIN</li>
+            </ul>
+
+            <h3>Window Functions</h3>
+
+            <pre><code>SELECT
+  user_id,
+  amount,
+  RANK() OVER (
+    PARTITION BY user_id
+    ORDER BY amount DESC
+  )
+FROM orders;</code></pre>
+
+            <h3>CTEs</h3>
+
+            <pre><code>WITH recent_orders AS (
+  SELECT *
+  FROM orders
+  WHERE created_at > now() - interval '7 days'
+)
+SELECT count(*)
+FROM recent_orders;</code></pre>
+
+        </section>
+
+        <section>
+            <h2>6. Transactions and Concurrency</h2>
+
+            <h3>ACID</h3>
+
+            <ul>
+                <li>Atomicity</li>
+                <li>Consistency</li>
+                <li>Isolation</li>
+                <li>Durability</li>
+            </ul>
+
+            <h3>Isolation Levels</h3>
+
+            <ul>
+                <li>Read Committed</li>
+                <li>Repeatable Read</li>
+                <li>Serializable</li>
+            </ul>
+
+            <pre><code>BEGIN;
+
+UPDATE accounts
+SET balance = balance - 100
+WHERE id = 1;
+
+UPDATE accounts
+SET balance = balance + 100
+WHERE id = 2;
+
+COMMIT;</code></pre>
+
+            <h3>Deadlocks</h3>
+
+            <div class="warning">
+                Always lock rows in consistent order.
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Indexing Deep Dive</h2>
+
+            <h3>B-Tree Index</h3>
+
+            <pre><code>CREATE INDEX idx_users_email
+ON users(email);</code></pre>
+
+            <h3>GIN Index</h3>
+
+            <pre><code>CREATE INDEX idx_products_metadata
+ON products USING GIN(metadata);</code></pre>
+
+            <h3>Partial Index</h3>
+
+            <pre><code>CREATE INDEX idx_active_users
+ON users(status)
+WHERE status = 'active';</code></pre>
+
+            <h3>Composite Index</h3>
+
+            <pre><code>CREATE INDEX idx_orders_user_created
+ON orders(user_id, created_at DESC);</code></pre>
+
+            <div class="note">
+                Indexes improve reads but slow down writes.
+            </div>
+        </section>
+
+        <section>
+            <h2>8. Query Optimization</h2>
+
+            <h3>EXPLAIN ANALYZE</h3>
+
+            <pre><code>EXPLAIN ANALYZE
+SELECT *
+FROM users
+WHERE email = 'john@example.com';</code></pre>
+
+            <h3>Important Concepts</h3>
+
+            <ul>
+                <li>Sequential Scan</li>
+                <li>Index Scan</li>
+                <li>Bitmap Heap Scan</li>
+                <li>Nested Loop</li>
+                <li>Hash Join</li>
+            </ul>
+
+            <h3>Common Problems</h3>
+
+            <ul>
+                <li>N+1 queries</li>
+                <li>Missing indexes</li>
+                <li>Over-indexing</li>
+                <li>OFFSET pagination</li>
+            </ul>
+
+            <div class="example">
+                Use keyset pagination instead of OFFSET for huge datasets.
+            </div>
+        </section>
+
+        <section>
+            <h2>9. Partitioning</h2>
+
+            <h3>Partition Types</h3>
+
+            <ul>
+                <li>Range Partitioning</li>
+                <li>List Partitioning</li>
+                <li>Hash Partitioning</li>
+            </ul>
+
+            <pre><code>CREATE TABLE logs (
+  id BIGSERIAL,
+  created_at TIMESTAMP,
+  message TEXT
+)
+PARTITION BY RANGE (created_at);</code></pre>
+
+        </section>
+
+        <section>
+            <h2>10. Replication and High Availability</h2>
+
+            <h3>Streaming Replication</h3>
+
+            <ul>
+                <li>Primary streams WAL logs to replicas</li>
+                <li>Used for failover and read scaling</li>
+            </ul>
+
+            <h3>Replication Modes</h3>
+
+            <ul>
+                <li>Synchronous</li>
+                <li>Asynchronous</li>
+            </ul>
+
+            <h3>HA Tools</h3>
+
+            <ul>
+                <li>Patroni</li>
+                <li>repmgr</li>
+                <li>Pgpool-II</li>
+            </ul>
+
+            <div class="warning">
+                Replication is NOT backup.
+            </div>
+        </section>
+
+        <section>
+            <h2>11. Backup and Recovery</h2>
+
+            <h3>Logical Backup</h3>
+
+            <pre><code>pg_dump mydb > backup.sql</code></pre>
+
+            <h3>Physical Backup</h3>
+
+            <ul>
+                <li>Base backups</li>
+                <li>WAL archiving</li>
+            </ul>
+
+            <h3>PITR</h3>
+
+            <p>
+                Point-In-Time Recovery restores DB to exact timestamp using WAL replay.
+            </p>
+        </section>
+
+        <section>
+            <h2>12. PostgreSQL Security</h2>
+
+            <h3>Authentication</h3>
+
+            <ul>
+                <li>SCRAM-SHA-256</li>
+                <li>LDAP</li>
+                <li>Kerberos</li>
+                <li>Certificate authentication</li>
+            </ul>
+
+            <h3>Authorization</h3>
+
+            <pre><code>GRANT SELECT ON users TO analyst_role;</code></pre>
+
+            <h3>Row-Level Security</h3>
+
+            <pre><code>ALTER TABLE orders
+ENABLE ROW LEVEL SECURITY;</code></pre>
+
+            <div class="warning">
+                Never expose PostgreSQL directly to public internet.
+            </div>
+        </section>
+
+        <section>
+            <h2>13. JSON and JSONB</h2>
+
+            <pre><code>SELECT metadata->>'name'
+FROM products
+WHERE metadata->>'category' = 'electronics';</code></pre>
+
+            <table>
+                <tr>
+                    <th>JSON</th>
+                    <th>JSONB</th>
+                </tr>
+
+                <tr>
+                    <td>Preserves formatting</td>
+                    <td>Binary optimized</td>
+                </tr>
+
+                <tr>
+                    <td>Slower queries</td>
+                    <td>Indexable</td>
+                </tr>
+            </table>
+
+            <div class="note">
+                JSONB is preferred for production workloads.
+            </div>
+        </section>
+
+        <section>
+            <h2>14. Full Text Search</h2>
+
+            <pre><code>SELECT *
+FROM articles
+WHERE to_tsvector(content)
+@@ plainto_tsquery('database optimization');</code></pre>
+
+            <p>
+                PostgreSQL can replace Elasticsearch for many medium-scale search workloads.
+            </p>
+        </section>
+
+        <section>
+            <h2>15. PostgreSQL Extensions</h2>
+
+            <ul>
+                <li>pg_stat_statements</li>
+                <li>PostGIS</li>
+                <li>pgvector</li>
+                <li>TimescaleDB</li>
+                <li>uuid-ossp</li>
+            </ul>
+
+            <h3>Vector Search</h3>
+
+            <pre><code>CREATE EXTENSION vector;</code></pre>
+
+            <div class="note">
+                PostgreSQL is increasingly used as an AI vector database.
+            </div>
+        </section>
+
+        <section>
+            <h2>16. Performance Tuning</h2>
+
+            <h3>Important Parameters</h3>
+
+            <ul>
+                <li>shared_buffers</li>
+                <li>work_mem</li>
+                <li>maintenance_work_mem</li>
+                <li>effective_cache_size</li>
+                <li>max_connections</li>
+            </ul>
+
+            <h3>Connection Pooling</h3>
+
+            <ul>
+                <li>PgBouncer</li>
+                <li>Pgpool-II</li>
+            </ul>
+
+            <div class="warning">
+                Thousands of direct DB connections can destroy performance.
+            </div>
+
+            <h3>Monitoring</h3>
+
+            <ul>
+                <li>pg_stat_activity</li>
+                <li>pg_stat_statements</li>
+                <li>Prometheus</li>
+                <li>Grafana</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>17. Scaling PostgreSQL</h2>
+
+            <h3>Vertical Scaling</h3>
+
+            <ul>
+                <li>More CPU</li>
+                <li>More RAM</li>
+                <li>Faster disks</li>
+            </ul>
+
+            <h3>Read Scaling</h3>
+
+            <ul>
+                <li>Read replicas</li>
+                <li>Caching</li>
+            </ul>
+
+            <h3>Horizontal Scaling</h3>
+
+            <ul>
+                <li>Citus</li>
+                <li>Application sharding</li>
+            </ul>
+
+            <div class="warning">
+                Sharding massively increases operational complexity.
+            </div>
+        </section>
+
+        <section>
+            <h2>18. Cloud PostgreSQL</h2>
+
+            <ul>
+                <li>Amazon RDS PostgreSQL</li>
+                <li>Azure PostgreSQL</li>
+                <li>Google Cloud SQL</li>
+                <li>Neon</li>
+                <li>Supabase</li>
+            </ul>
+
+            <h3>Managed DB Benefits</h3>
+
+            <ul>
+                <li>Automated backups</li>
+                <li>Managed failover</li>
+                <li>Reduced operational burden</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>19. Migration Strategies</h2>
+
+            <ul>
+                <li>Blue-Green Deployment</li>
+                <li>Online Schema Migration</li>
+                <li>Zero Downtime Migration</li>
+            </ul>
+
+            <pre><code>ALTER TABLE users
+ADD COLUMN bio TEXT;</code></pre>
+
+            <div class="warning">
+                Some ALTER operations lock entire tables.
+            </div>
+        </section>
+
+        <section>
+            <h2>20. PostgreSQL Anti-Patterns</h2>
+
+            <ul>
+                <li>SELECT *</li>
+                <li>Missing indexes</li>
+                <li>Too many indexes</li>
+                <li>Huge transactions</li>
+                <li>Ignoring VACUUM</li>
+                <li>Unlimited DB connections</li>
+                <li>OFFSET pagination</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>21. Production Checklist</h2>
+
+            <ul>
+                <li>Connection pooling configured</li>
+                <li>Replication tested</li>
+                <li>Automated backups verified</li>
+                <li>Slow query logging enabled</li>
+                <li>Monitoring dashboards configured</li>
+                <li>Disaster recovery rehearsed</li>
+                <li>VACUUM monitored</li>
+                <li>Index bloat tracked</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>22. Senior-Level PostgreSQL Knowledge</h2>
+
+            <ul>
+                <li>How WAL works internally</li>
+                <li>Checkpoint tuning</li>
+                <li>Autovacuum tuning</li>
+                <li>Transaction ID wraparound</li>
+                <li>Lock contention debugging</li>
+                <li>Replication lag analysis</li>
+                <li>Query planner internals</li>
+                <li>HOT updates</li>
+                <li>Index bloat analysis</li>
+            </ul>
+
+            <div class="note">
+                Senior PostgreSQL engineering is primarily:
+                scalability, reliability, observability,
+                failure recovery, consistency, and operational architecture.
+            </div>
+        </section>
+
+        <section>
+            <h2>23. PostgreSQL + AI Systems</h2>
+
+            <ul>
+                <li>RAG metadata storage</li>
+                <li>Vector embeddings</li>
+                <li>Conversation memory</li>
+                <li>Hybrid SQL + vector search</li>
+                <li>AI retrieval systems</li>
+            </ul>
+
+            <pre><code>SELECT *
+FROM documents
+ORDER BY embedding <-> '[0.12, 0.55, ...]'
+LIMIT 5;</code></pre>
+
+        </section>
+
+        <section>
+            <h2>24. Complete Learning Roadmap</h2>
+
+            <h3>Beginner</h3>
+
+            <ul>
+                <li>SQL basics</li>
+                <li>CRUD</li>
+                <li>Indexes</li>
+            </ul>
+
+            <h3>Intermediate</h3>
+
+            <ul>
+                <li>Transactions</li>
+                <li>Query optimization</li>
+                <li>JSONB</li>
+                <li>Partitioning</li>
+            </ul>
+
+            <h3>Advanced</h3>
+
+            <ul>
+                <li>Replication</li>
+                <li>HA</li>
+                <li>Performance tuning</li>
+                <li>Internals</li>
+            </ul>
+
+            <h3>Senior / Staff</h3>
+
+            <ul>
+                <li>Operational debugging</li>
+                <li>Scaling strategy</li>
+                <li>Disaster recovery</li>
+                <li>Cost optimization</li>
+                <li>Database observability</li>
+            </ul>
+        </section>
+
+        <div class="card">
+            <h2>Back to <a href="../index.html">Home Page</a></h2>
+        </div>
+
+        <footer>
+            <p>
+                PostgreSQL Mastery Guide —
+                designed to be a complete all-in-one learning reference
+                for serious software engineers and database professionals.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

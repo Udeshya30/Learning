@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docling Feature Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f7f8fb;
+      color: #172a46;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2.4rem;
+    }
+
+    h2 {
+      margin: 32px 0 16px;
+      font-size: 1.7rem;
+    }
+
+    h3 {
+      margin: 24px 0 10px;
+      font-size: 1.3rem;
+    }
+
+    p,
+    li {
+      line-height: 1.7;
+    }
+
+    pre {
+      background: #1f2937;
+      color: #f8fafc;
+      padding: 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e1e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 0.95rem;
+    }
+
+    .tip {
+      background: #eef2ff;
+      border-left: 4px solid #6366f1;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <h1>Docling Feature Demo</h1>
+      <p>This page describes the available `docling_ocr` features and shows how to test them from Python.</p>
+    </header>
+
+    <section class="card">
+      <h2>What this page covers</h2>
+      <ul>
+        <li><strong>Docling feature set</strong> available from the installed `docling_ocr` package.</li>
+        <li>How to use the core class: <code>SmolDoclingExtractor</code>.</li>
+        <li>How to test extraction from images with Python.</li>
+        <li>Which configuration options are supported.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Core API</h2>
+      <p>The main extractor in this package is <code>SmolDoclingExtractor</code>. It is a document understanding OCR
+        model that works with scanned documents, forms, and layout-heavy images.</p>
+      <div class="badge">SmolDoclingExtractor</div>
+      <div class="badge">extract_text()</div>
+      <div class="badge">extract_text_from_image()</div>
+      <div class="badge">__call__()</div>
+      <div class="badge">device selection</div>
+      <div class="badge">model override</div>
+    </section>
+
+    <section class="card">
+      <h2>Features provided</h2>
+      <ol>
+        <li><strong>Image path extraction</strong> via <code>extract_text(image_path, max_length=512)</code>.</li>
+        <li><strong>PIL image extraction</strong> via <code>extract_text_from_image(image, max_length=512)</code>.</li>
+        <li><strong>Convenience call</strong> using <code>extractor(image_input)</code>.</li>
+        <li><strong>Model selection</strong> with <code>model_name</code> while creating the extractor.</li>
+        <li><strong>Device control</strong> using <code>device="cpu"</code> or <code>device="cuda:0"</code>.</li>
+        <li><strong>Generated text length</strong> can be limited with <code>max_length</code>.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Sample usage</h2>
+      <p>Copy and run this Python sample to test text extraction from an image.</p>
+      <pre><code>from docling_ocr import SmolDoclingExtractor
+
+extractor = SmolDoclingExtractor(
+    model_name="ds4sd/SmolDocling-256M-preview",
+    device="cpu"
+)
+
+result = extractor.extract_text("path/to/sample-image.png", max_length=512)
+print("--- Extracted text ---")
+print(result)
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Test instructions</h2>
+      <h3>1. Install required packages</h3>
+      <pre><code>pip install docling_ocr transformers pillow torch</code></pre>
+      <h3>2. Place a sample image</h3>
+      <p>Use any document image file such as JPG, PNG, or scanned page. Put it in your workspace and update the path in
+        the sample code above.</p>
+      <h3>3. Run the sample script</h3>
+      <pre><code>python -c "from docling_ocr import SmolDoclingExtractor; extractor = SmolDoclingExtractor(device='cpu'); print(extractor.extract_text('your-image.png'))"</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Advanced testing options</h2>
+      <ul>
+        <li><strong>Change model</strong>: override <code>model_name</code> to use a different Hugging Face model.</li>
+        <li><strong>Use GPU</strong>: set <code>device="cuda:0"</code> if CUDA is available.</li>
+        <li><strong>Use PIL images</strong>: load the image in Python and call <code>extract_text_from_image()</code>.
+        </li>
+      </ul>
+    </section>
+
+    <section class="tip">
+      <strong>Note:</strong> This is a static demo page for learning. The actual extraction still runs in Python, not in
+      the browser. Open this file in your browser to read the feature guide, then run the example code in your terminal.
+    </section>
+
+    <section class="card">
+      <h2>Document layout to explore</h2>
+      <p>If you want to test the package with a document that includes headings, tables, or form fields, use an image
+        containing:</p>
+      <ul>
+        <li>multiple text blocks</li>
+        <li>columns or table cells</li>
+        <li>captions or labels</li>
+      </ul>
+    </section>
+    <div class="card">
+      <h2>Back to <a href="../index.html">Home Page</a></h2>
+    </div>
+  </div>
+</body>
+
+</html>
